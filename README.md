@@ -5,7 +5,17 @@ The repository implements the method described in the paper
 
 Li, K., Mai, F., Shen, R., & Yan, X. (2020). [Measuring corporate culture using machine learning](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3256608). _Review of Financial Studies_, forthcoming. 
 
-The code is tested in Ubuntu 18.04 and macOS Catalina.  
+The code is tested in Ubuntu 18.04 and macOS Catalina.
+
+## FastText
+This repository was forked to improve on the author's existing implementation as part of a project assigned during my stint as a Research Assistant.
+
+While exploring the repository as prelimiary work for a project, word2vec model was unable to  Facebook's [FastText](https://research.fb.com/blog/2016/08/fasttext/) model, which looks at the n-grams making up the words rather than whole words. This allows for words that aren't in the corpus to be vectorized.
+
+To implement fastText instead of word2vec:
+- Run `python clean_and_train.py --mode=fasttext` in step 2 of "Running the Code"
+- Run `python create_unseen_dict.py` instead of `python create_dict.py` in step 3 of "Running the Code".
+
 
 ## Requirement
 The code requres 
@@ -20,6 +30,14 @@ We included some example data in the `data/input/` folder. The three files are
 - `documents.txt`: Each line is a document (e.g., each earnings call). Each document needs to have line breaks remvoed. The file has no header row. 
 - `document_ids.txt`: Each line is document ID (e.g., unique identifier for each earnings call). A document ID cannot have `_` or whitespaces. The file has no header row. 
 - (Optional) `id2firms.csv`: A csv file with three columns (`document_id`:str, `firm_id`:str, `time`:int). The file has a header row. 
+
+**NEW:** 
+
+`data_to_input.py` has been added to read pdf files and write them to a text file for parsing. 
+
+Instructions:
+- Put all the pdf files in a directory.
+- Edit `line 9` to point to the directory containing the pdf files.
 
 
 ## Before running the code

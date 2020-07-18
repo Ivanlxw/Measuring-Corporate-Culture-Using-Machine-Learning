@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Set
 
 # Hardware options
-N_CORES: int = 2  # max number of CPU cores to use
+N_CORES: int = 4  # max number of CPU cores to use
 RAM_CORENLP: str = "8G"  # max RAM allocated for parsing using CoreNLP
 PARSE_CHUNK_SIZE: int = 100 # number of lines in the input file to process uing CoreNLP at once. Increase on workstations with larger RAM (e.g. to 1000 if RAM is 64G)  
 
@@ -89,8 +89,80 @@ SEED_WORDS: Dict[str, List[str]] = {
         "dedicate",
         "customer_expectation",
     ],
+    "cybersecurity": [
+        "cybersecurity",
+        "security",
+        "encryption",
+        "tokenization",
+        "biometrics",
+    ],
+    "mobile transaction": [
+        "mobile transaction",
+        "smartphone",
+        "digital",
+        "wallet",
+    ],
+    "data analytics": [
+        "data analytics",
+        "data science",
+        "data",
+        "big data",
+        "cloud computing",
+        "cloud",
+        "AI",
+        "artificial intelligence",
+        "machine learning",
+        "deep learning",
+        "business intelligence",
+        "BI",
+    ],
+    "blockchain": [
+        "blockchain",
+        "crypto",
+        "cryptocurrency",
+        "smart contracts",
+    ],
+    "peer to peer": [
+        "peer to peer",
+        "P2P",
+        "consumer to customer",
+        "crowdfunding",
+    ],
+    "internet of things": [
+        "internet of things",
+        "smart devices",
+        "devices",
+        "networks",
+        "wireless",
+        "wireless sensor"
+    ],
+    "environment": [
+        "environment",
+        "climate change",
+        "sustainability",
+        "climate"
+    ],
+    "Social Concerns": [
+        "social",
+        "social concerns",
+        "diversity",
+        "human rights",
+        "consumer proterction",
+        "animal welfare",
+        "welfare"
+    ],
+    "governance": [
+        "governance",
+        "corporate governance",
+        "management",
+        "structure",
+        "management structure",
+        "employee relations",
+        "employtee compensation",
+        "compensation",
+        "responsible investment"
+    ]
 }
-
 
 # Create directories if not exist
 Path(DATA_FOLDER, "processed", "parsed").mkdir(parents=True, exist_ok=True)

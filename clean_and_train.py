@@ -6,9 +6,14 @@ import pandas as pd
 import datetime
 import logging
 import sys
+import argparse
+
+parser = argparse.ArgumentParser(description='Train word vectorization model.')
+parser.add_argument('--mode', type=str, default='word2vec',
+                    help='fasttext or word2vec')
+args = parser.parse_args()
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-
 
 def clean_line(line, id):
     """clean one line of parsed string (output from CoreNLP)
@@ -87,16 +92,40 @@ culture_models.file_bigramer(
 )
 
 # train the word2vec model ----------------
-
 print(datetime.datetime.now())
-print("Training w2v model...")
-culture_models.train_w2v_model(
-    input_path=Path(
-        global_options.DATA_FOLDER, "processed", "trigram", "documents.txt"
-    ),
-    model_path=Path(global_options.MODEL_FOLDER, "w2v", "w2v.mod"),
-    size=global_options.W2V_DIM,
-    window=global_options.W2V_WINDOW,
-    workers=global_options.N_CORES,
-    iter=global_options.W2V_ITER,
-)
+
+if args.model.lower() == "word2vec":
+    print("Training w2v model...")
+    culture_models.train_w2v_model(
+        input_path=Path(
+            global_options.DATA_FOLDER, "processed", "trigram", "documents.txt"
+        ),
+        model_path=Path(global_options.MODEL_FOLDER, "w2v", "w2v.mod"),
+        size=global_options.W2V_DIM,
+        window=global_options.W2V_WINDOW,
+        workers=global_options.N_CORES,
+        iter=global_options.W2V_ITER,
+    )
+elif args.mode.lower() == "fasttext":
+    ## fast text
+    import gensim
+    from gensim.models.fasttext import FastText
+
+    corpus_confcall = gensim.models.word2vec.PathLineSentences(
+        str(Path(
+            global_options.DATA_FOLDER, "processed", "trigram", "documents.txt"
+        )), max_sentence_length=10000000
+    )
+
+    "FastText models support vector lookups for out-of-vocabulary words by summing up character ngrams belonging to the word."
+    FT_model = gensim.models.FastText(sentences=corpus_confcall, size=200, window=6, min_count=2, iter=20)  # instantiate
+    try:
+        FT_model.save("models/w2v/w2v_ar_all")
+    except:
+        import tempfile
+        import os
+        with tempfile.NamedTemporaryFile(prefix='saved_model_gensim-', delete=False) as tmp:
+            FT_model.save(tmp.name, separately=[])
+
+else:
+    raise Exception("--mode has to be 'fasttext' or 'word2vec")
